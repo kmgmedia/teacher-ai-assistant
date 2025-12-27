@@ -113,7 +113,15 @@ st.sidebar.title("📋 Navigation")
 
 # Check if Google Sheets is configured to show/hide View Students
 from config import settings
-sheets_configured = bool(settings.GOOGLE_SHEETS_CREDENTIALS and settings.GOOGLE_SHEET_ID)
+# On Streamlit Cloud, credentials come from st.secrets, not GOOGLE_SHEETS_CREDENTIALS
+try:
+    import streamlit as st_check
+    if hasattr(st_check, 'secrets') and 'gcp_service_account' in st_check.secrets:
+        sheets_configured = bool(settings.GOOGLE_SHEET_ID)
+    else:
+        sheets_configured = bool(settings.GOOGLE_SHEETS_CREDENTIALS and settings.GOOGLE_SHEET_ID)
+except:
+    sheets_configured = bool(settings.GOOGLE_SHEETS_CREDENTIALS and settings.GOOGLE_SHEET_ID)
 
 # Teacher selector (if Google Sheets is configured)
 if sheets_configured:
