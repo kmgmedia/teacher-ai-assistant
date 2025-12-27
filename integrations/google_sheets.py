@@ -52,18 +52,23 @@ def get_sheets_client():
     # Check if running on Streamlit Cloud
     try:
         import streamlit as st
-        if hasattr(st, 'secrets') and 'gcp_service_account' in st.secrets:
-            # Use Streamlit secrets
-            credentials = Credentials.from_service_account_info(
-                st.secrets["gcp_service_account"],
-                scopes=SCOPES
-            )
-            logger.info("Using Streamlit Cloud secrets for authentication")
-        else:
-            # Use local credentials file
+        # Check if secrets are actually available (not just that Streamlit is imported)
+        try:
+            if hasattr(st, 'secrets') and 'gcp_service_account' in st.secrets:
+                # Use Streamlit secrets
+                credentials = Credentials.from_service_account_info(
+                    st.secrets["gcp_service_account"],
+                    scopes=SCOPES
+                )
+                logger.info("Using Streamlit Cloud secrets for authentication")
+            else:
+                # Streamlit imported but no secrets, use local file
+                credentials = _load_local_credentials()
+        except:
+            # Error accessing secrets, use local file
             credentials = _load_local_credentials()
-    except (ImportError, AttributeError):
-        # Streamlit not available or secrets not configured, use local file
+    except ImportError:
+        # Streamlit not available, use local file
         credentials = _load_local_credentials()
     
     # Authorize and cache client
