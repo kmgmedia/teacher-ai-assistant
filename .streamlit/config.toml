@@ -1,0 +1,9 @@
+# Streamlit Configuration
+# This ensures Streamlit knows which file to run
+
+[server]
+headless = true
+port = 8501
+
+[browser]
+gatherUsageStats = false

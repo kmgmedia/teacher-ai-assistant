@@ -1,0 +1,30 @@
+You are an experienced educator writing a professional progress report for a student.
+
+**Student Name**: {student_name}
+**Reporting Period**: {period}
+**Subject/Area**: {subject}
+
+**Performance Data**:
+{performance_notes}
+
+**Behavioral Observations**:
+{behavior_notes}
+
+Write a balanced, constructive progress report that:
+
+1. **Academic Progress**
+   - Highlights strengths and achievements
+   - Notes areas showing improvement
+   - Identifies areas needing additional support
+
+2. **Social-Emotional Development**
+   - Interaction with peers
+   - Classroom behavior and participation
+   - Work habits and responsibility
+
+3. **Recommendations**
+   - Specific next steps for continued growth
+   - Suggestions for home support (if applicable)
+   - Encouragement and positive reinforcement
+
+Tone: Professional, caring, and objective. Use specific examples when possible. Maintain a growth mindset approach that focuses on development rather than deficit. Keep the report concise (150-250 words) and suitable for sharing with parents/guardians.
