@@ -62,11 +62,9 @@ def get_sheets_client():
         else:
             # Use local credentials file
             credentials = _load_local_credentials()
-            logger.info("Using local credentials file for authentication")
-    except (ImportError, AttributeError, FileNotFoundError):
+    except (ImportError, AttributeError):
         # Streamlit not available or secrets not configured, use local file
         credentials = _load_local_credentials()
-        logger.info("Using local credentials file for authentication")
     
     # Authorize and cache client
     try:

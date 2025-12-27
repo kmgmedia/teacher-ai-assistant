@@ -45,14 +45,15 @@ def load_students_cached():
     Returns empty list if not configured or on error.
     """
     try:
-        # Check if Google Sheets is configured
+        # Check if Google Sheets is configured (only need SHEET_ID)
         from config import settings
-        if not settings.GOOGLE_SHEETS_CREDENTIALS or not settings.GOOGLE_SHEET_ID:
+        if not settings.GOOGLE_SHEET_ID:
             return []
         data = read_student_data()
         return data if data else []
     except Exception as e:
         # Silently return empty list on error - don't crash the app
+        st.error(f"Failed to load students: {str(e)}")
         return []
 
 @st.cache_data(ttl=300)
@@ -62,14 +63,15 @@ def get_student_cached(student_name):
     Returns None if not found or not configured.
     """
     try:
-        # Check if Google Sheets is configured
+        # Check if Google Sheets is configured (only need SHEET_ID)
         from config import settings
-        if not settings.GOOGLE_SHEETS_CREDENTIALS or not settings.GOOGLE_SHEET_ID:
+        if not settings.GOOGLE_SHEET_ID:
             return None
         student = get_student_by_name(student_name)
         return student
     except Exception as e:
         # Silently return None on error
+        st.error(f"Failed to fetch student: {str(e)}")
         return None
 
 # Custom CSS

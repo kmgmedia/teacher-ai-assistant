@@ -27,6 +27,8 @@ GOOGLE_TEMPERATURE = float(get_config_value("GOOGLE_TEMPERATURE", "0.7"))
 GOOGLE_MAX_TOKENS = int(get_config_value("GOOGLE_MAX_TOKENS", "1000"))
 
 # Google Sheets Configuration
+# GOOGLE_SHEETS_CREDENTIALS is only needed for local development
+# On Streamlit Cloud, service account info comes from secrets.gcp_service_account
 GOOGLE_SHEETS_CREDENTIALS = get_config_value("GOOGLE_SHEETS_CREDENTIALS")
 GOOGLE_SHEET_ID = get_config_value("GOOGLE_SHEET_ID")
 
@@ -44,8 +46,9 @@ OUTPUT_DIR = os.getenv("OUTPUT_DIR", "data/output")
 
 # Validate critical settings lazily: Gemini calls will check at runtime
 
-# Google Sheets is optional - warn if not configured but don't fail
-if not GOOGLE_SHEETS_CREDENTIALS or not GOOGLE_SHEET_ID:
+# Google Sheets validation - only check for SHEET_ID
+# Credentials can come from secrets (Streamlit Cloud) or local file
+if not GOOGLE_SHEET_ID:
     import warnings
     warnings.warn(
         "Google Sheets integration not configured. "
