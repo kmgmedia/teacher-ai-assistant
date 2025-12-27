@@ -115,17 +115,19 @@ st.sidebar.title("📋 Navigation")
 from config import settings
 # On Streamlit Cloud, credentials come from st.secrets, not GOOGLE_SHEETS_CREDENTIALS
 try:
-    import streamlit as st_check
-    if hasattr(st_check, 'secrets') and 'gcp_service_account' in st_check.secrets:
+    if hasattr(st, 'secrets') and 'gcp_service_account' in st.secrets:
         sheets_configured = bool(settings.GOOGLE_SHEET_ID)
     else:
         sheets_configured = bool(settings.GOOGLE_SHEETS_CREDENTIALS and settings.GOOGLE_SHEET_ID)
 except:
     sheets_configured = bool(settings.GOOGLE_SHEETS_CREDENTIALS and settings.GOOGLE_SHEET_ID)
 
-# Teacher selector (if Google Sheets is configured)
+# Teacher selector - Always show if sheets are configured
+st.sidebar.markdown("### 👨‍🏫 Select Teacher")
+if 'selected_teacher' not in st.session_state:
+    st.session_state['selected_teacher'] = "All Teachers"
+
 if sheets_configured:
-    st.sidebar.markdown("### 👨‍🏫 Select Teacher")
     try:
         # Load student data to get unique teachers
         import pandas as pd
@@ -134,21 +136,25 @@ if sheets_configured:
             df_students = pd.DataFrame(students_data)
             if 'Teacher' in df_students.columns:
                 teachers = sorted(df_students['Teacher'].unique().tolist())
-                selected_teacher = st.sidebar.selectbox(
-                    "View as:",
-                    options=["All Teachers"] + teachers,
-                    key="teacher_filter"
-                )
-                st.session_state['selected_teacher'] = selected_teacher
+                if teachers:  # Only show selector if we have teachers
+                    selected_teacher = st.sidebar.selectbox(
+                        "View as:",
+                        options=["All Teachers"] + teachers,
+                        key="teacher_filter"
+                    )
+                    st.session_state['selected_teacher'] = selected_teacher
+                else:
+                    st.sidebar.info("No teachers found in data")
             else:
-                st.session_state['selected_teacher'] = "All Teachers"
+                st.sidebar.warning("Teacher column not found in sheet")
         else:
-            st.session_state['selected_teacher'] = "All Teachers"
+            st.sidebar.info("Loading student data...")
     except Exception as e:
-        st.sidebar.warning(f"Could not load teachers: {e}")
-        st.session_state['selected_teacher'] = "All Teachers"
-    
-    st.sidebar.markdown("---")
+        st.sidebar.error(f"Error loading teachers: {str(e)}")
+else:
+    st.sidebar.warning("Configure Google Sheets to enable teacher filtering")
+
+st.sidebar.markdown("---")
 
 if sheets_configured:
     page_options = ["🏠 Home", "📊 Analytics", "📝 Lesson Generator", "📊 Report Generator", "💌 Parent Message", "👥 View Students"]
