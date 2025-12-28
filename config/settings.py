@@ -32,11 +32,6 @@ GOOGLE_MAX_TOKENS = int(get_config_value("GOOGLE_MAX_TOKENS", "1000"))
 GOOGLE_SHEETS_CREDENTIALS = get_config_value("GOOGLE_SHEETS_CREDENTIALS")
 GOOGLE_SHEET_ID = get_config_value("GOOGLE_SHEET_ID")
 
-# Flask Configuration
-FLASK_HOST = os.getenv("FLASK_HOST", "0.0.0.0")
-FLASK_PORT = int(os.getenv("FLASK_PORT", "5000"))
-FLASK_DEBUG = os.getenv("FLASK_DEBUG", "True").lower() == "true"
-
 # Logging Configuration
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 LOG_FILE = os.getenv("LOG_FILE", "logs/app.log")
