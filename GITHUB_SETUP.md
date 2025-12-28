@@ -101,8 +101,8 @@ universe_domain = "googleapis.com"
 - [x] .streamlit/secrets.toml excluded from git (.gitignore line 33)
 - [x] STREAMLIT_DEPLOYMENT.md uses placeholder credentials only
 - [x] No real credentials in any committed files
-- [x] New API key generated: AIzaSyCdtkFcM8rnDWoC5oiSvJ1mRaudoUVwjv8
-- [x] New service account JSON created
+- [x] New API key generated (stored in .env file only, not in git)
+- [x] New service account JSON created (stored in credentials/ folder only, not in git)
 
 ---
 
